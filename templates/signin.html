@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SocialMedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @layer base {
+            :root {
+                --neon-blue: #00f2fe;
+                --neon-green: #39ff14;
+                --neon-purple: #bf00ff;
+            }
+        }
+        @layer utilities {
+            .neon-text {
+                text-shadow: 0 0 7px var(--neon-blue),
+                           0 0 10px var(--neon-blue),
+                           0 0 21px var(--neon-blue),
+                           0 0 42px var(--neon-blue),
+                           0 0 82px var(--neon-green);
+            }
+            .neon-border {
+                box-shadow: 0 0 7px var(--neon-blue),
+                           0 0 10px var(--neon-blue),
+                           0 0 21px var(--neon-blue),
+                           0 0 42px var(--neon-blue);
+            }
+            .hover-button {
+                transition: background-color 0.3s ease;
+            }
+            .hover-button:hover {
+                background-color: var(--neon-green);
+            }
+        }
+    </style>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const button = event.target.querySelector('button[type="submit"]');
+            const buttonText = button.querySelector('.button-text');
+            const spinner = button.querySelector('.spinner');
+            
+            buttonText.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            event.target.submit();
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-black min-h-screen flex items-center justify-center">
+    <div class="max-w-md w-full space-y-8 p-8 rounded-2xl bg-gray-800/50 backdrop-blur-sm neon-border">
+        <div class="text-center">
+            <h2 class="neon-text text-3xl font-bold mb-4">Sign In</h2>
+            <p class="text-gray-400">Welcome back! Please login to continue</p>
+        </div>
+        <form method="post" onsubmit="return handleSubmit(event)" class="space-y-6">
+            {% csrf_token %}
+            {% if messages %}
+            <div class="space-y-2">
+                {% for message in messages %}
+                <div class="p-3 rounded-lg {% if message.tags == 'error' %}bg-red-500/20 text-red-200{% else %}bg-green-500/20 text-green-200{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                <input type="text" name="name" id="name" required
+                       class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border-2 border-transparent focus:border-neon-blue focus:ring-2 focus:ring-neon-blue transition-colors duration-200">
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                <input type="password" name="password" id="password" required
+                       class="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border-2 border-transparent focus:border-neon-blue focus:ring-2 focus:ring-neon-blue transition-colors duration-200">
+            </div>
+            
+            <button type="submit" 
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-neon-blue via-neon-green to-neon-purple transition-all duration-300 hover:bg-none hover:bg-[var(--neon-blue)]">
+                <svg class="spinner hidden animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span class="button-text">Sign In</span>
+            </button>
+        </form>
+        
+        <div class="text-center text-gray-400">
+            
+        </div>
+    </div>
+</body>
+</html>
