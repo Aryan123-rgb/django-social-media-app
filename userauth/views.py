@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from .models import Profile
@@ -38,3 +38,7 @@ def signin(request):
             return redirect("/posts")
 
     return render(request, "signin.html")
+
+def signout(request):
+    logout(request)
+    return redirect('/auth/signin')
